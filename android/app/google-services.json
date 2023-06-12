@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "319137741227",
+    "project_id": "money-app-f9957",
+    "storage_bucket": "money-app-f9957.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319137741227:android:bef9601ab5c8cedcefbaee",
+        "android_client_info": {
+          "package_name": "com.example.all_pay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319137741227-sdqobl68ld3ha87v1udi11cnbvn0hvqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7B-JmrPgtXtR0N13tACV4-WeWlUnczAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319137741227-sdqobl68ld3ha87v1udi11cnbvn0hvqi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "319137741227-nvhms0rtprksrdt1sejg8g0kaio9ruvu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.allPay"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319137741227:android:fa1c62d0c791dd08efbaee",
+        "android_client_info": {
+          "package_name": "com.example.money"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319137741227-sdqobl68ld3ha87v1udi11cnbvn0hvqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7B-JmrPgtXtR0N13tACV4-WeWlUnczAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319137741227-sdqobl68ld3ha87v1udi11cnbvn0hvqi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "319137741227-nvhms0rtprksrdt1sejg8g0kaio9ruvu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.allPay"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
