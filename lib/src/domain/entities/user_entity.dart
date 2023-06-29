@@ -23,6 +23,14 @@ class UserEntity {
     return 'UserEntity(uid: $uid, name: $name, email: $email, password: $password, isActive: $isActive, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
+  String getNameAndLastName() {
+    if (name == null) return "Profile";
+
+    String firstName = name!.split(" ").first;
+    String lastName = name!.split(" ").last;
+    return "$firstName $lastName";
+  }
+
   UserEntity.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
     name = json['name'];
