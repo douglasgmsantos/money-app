@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:319137741227:android:bef9601ab5c8cedcefbaee",
         "android_client_info": {
-          "package_name": "com.example.all_pay"
+          "package_name": "br.com.money"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "319137741227-nvhms0rtprksrdt1sejg8g0kaio9ruvu.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.allPay"
+                "bundle_id": "br.com.money"
               }
             }
           ]
@@ -45,7 +45,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:319137741227:android:fa1c62d0c791dd08efbaee",
         "android_client_info": {
-          "package_name": "com.example.money"
+          "package_name": "br.com.money"
         }
       },
       "oauth_client": [
@@ -70,7 +70,7 @@
               "client_id": "319137741227-nvhms0rtprksrdt1sejg8g0kaio9ruvu.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.allPay"
+                "bundle_id": "br.com.money"
               }
             }
           ]

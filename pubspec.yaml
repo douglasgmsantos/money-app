@@ -23,6 +23,7 @@ dependencies:
   cloud_firestore: ^4.7.1
   mobx: any
   flutter_mobx: any
+  flutter_screenutil: ^5.8.4
 
 
 dev_dependencies:

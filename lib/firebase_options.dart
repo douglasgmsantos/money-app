@@ -70,7 +70,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'money-app-f9957.appspot.com',
     iosClientId:
         '319137741227-nvhms0rtprksrdt1sejg8g0kaio9ruvu.apps.googleusercontent.com',
-    iosBundleId: 'com.example.allPay',
+    iosBundleId: 'br.com.money',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -81,6 +81,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'money-app-f9957.appspot.com',
     iosClientId:
         '319137741227-qsd7bmls4k7ue9t45el0dc0g3hpfdb3g.apps.googleusercontent.com',
-    iosBundleId: 'com.example.allPay.RunnerTests',
+    iosBundleId: 'br.com.money.RunnerTests',
   );
 }

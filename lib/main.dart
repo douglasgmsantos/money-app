@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_core/firebase_core.dart';
 import 'package:money/src/config/index.dart';
+import 'package:money/src/presentation/screen/home/home_screen.dart';
+import 'package:money/src/presentation/screen/sign-in/sign_in_screen.dart';
+import 'package:money/src/presentation/screen/sign-up/sign_up_screen.dart';
 import 'package:money/src/providers/auth_provider.dart';
 import 'package:money/src/presentation/screen/profile/profile_screen.dart';
 import 'package:money/src/presentation/screen/splash/splash_screen.dart';
@@ -32,7 +35,21 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Roboto`',
         ),
         home: const SplashScreen(),
-        // home: Profile(),
+        initialRoute: '/',
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/signup':
+              return MaterialPageRoute(builder: (_) => const SignUp());
+            case '/signin':
+              return MaterialPageRoute(builder: (_) => SignIn());
+            case '/welcome':
+              return MaterialPageRoute(builder: (_) => const WelcomeScreen());
+            case '/home':
+              return MaterialPageRoute(builder: (_) => const Home());
+            default:
+              return MaterialPageRoute(builder: (_) => const SplashScreen());
+          }
+        },
       ),
     );
   }

@@ -66,11 +66,7 @@ class WelcomeScreen extends StatelessWidget {
                           text: "Entrar",
                           icon: Icons.arrow_forward_ios,
                           onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignIn()),
-                            );
+                            Navigator.of(context).pushNamed('/signin');
                           }),
                       Container(
                         height: 30,
@@ -79,11 +75,7 @@ class WelcomeScreen extends StatelessWidget {
                           text: "Criar usuário",
                           icon: Icons.arrow_forward_ios,
                           onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignUp()),
-                            );
+                            Navigator.of(context).pushNamed('/signup');
                           })
                     ],
                   )

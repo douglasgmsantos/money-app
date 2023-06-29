@@ -1,16 +1,11 @@
 import 'dart:async';
 
+import 'package:money/src/domain/useCases/authentication_use_case.dart';
 import 'package:money/src/presentation/widget/button/button_primary.dart';
 import 'package:flutter/material.dart';
 import 'package:money/src/presentation/widget/button/button_secondary.dart';
-import 'package:money/src/presentation/controller/sign_up.dart';
-import 'package:money/src/utils/validations/validate_email.dart';
-import 'package:money/src/utils/validations/validate_password.dart';
-import 'package:money/src/model/enum/status_validation_enum.dart';
-import 'package:money/src/presentation/screen/sign-in/sign_in_screen.dart';
-import 'package:money/src/presentation/screen/welcome/welcome_screen.dart';
-
-import '../../../services/authentication_service.dart';
+import 'package:money/src/presentation/controller/create_user_controller.dart';
+import 'package:money/src/presentation/widget/custom_text_form_field.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -20,119 +15,31 @@ class SignUp extends StatefulWidget {
 }
 
 class SignUpState extends State<SignUp> {
-  final AuthenticationService _authenticationService = AuthenticationService();
-
-  SignUpController controller = SignUpController();
-  StatusValidationDefault statusEmail = StatusValidationDefault.PRISTINE;
-  StatusValidationDefault statusSenha = StatusValidationDefault.PRISTINE;
-  StatusValidationDefault statusConfirmSenha = StatusValidationDefault.PRISTINE;
+  final _formKey = GlobalKey<FormState>();
+  final createUserController = CreateUserController();
+  final _authenticateUserUseCase = AuthenticateUserUseCase();
 
   bool isLoading = false;
   bool isVisible = false;
 
-  String email = "";
-  String password = "";
-  String confirmPassword = "";
-
-  @override
-  void initState() {
-    super.initState();
-    controller.email.addListener(_getErrorTextEmail);
-    controller.password.addListener(_getErrorTextPassword);
-    controller.confirmPassword.addListener(_getErrorTextConfirmPassword);
-  }
-
-  @override
-  void dispose() {
-    controller.email.dispose();
-    controller.password.dispose();
-    controller.confirmPassword.dispose();
-    super.dispose();
-  }
-
-  String? _getErrorTextEmail() {
-    String email = controller.email.text.trim();
-
-    if (email.length < 3 && email.isEmpty) return null;
-
-    if (!ValidadteEmail().validate(email)) {
-      statusEmail = StatusValidationDefault.ERROR;
-      return "E-mail inválido.";
-    }
-
-    statusEmail = StatusValidationDefault.SUCCESS;
-    return null;
-  }
-
-  String? _getErrorTextPassword() {
-    ValidatePassword validadePassword = ValidatePassword();
-    String password = controller.password.text.trim();
-    String confirmPassword = controller.confirmPassword.text.trim();
-
-    if (password.length < 3 && password.isEmpty) return null;
-
-    if (!validadePassword.isPasswordLengthValid(password, confirmPassword)) {
-      statusConfirmSenha = StatusValidationDefault.ERROR;
-      return "Sua senha deve ter mais que 5 caracteres.";
-    }
-
-    statusConfirmSenha = StatusValidationDefault.SUCCESS;
-    return null;
-  }
-
-  String? _getErrorTextConfirmPassword() {
-    ValidatePassword validadePassword = ValidatePassword();
-    String password = controller.password.text.trim();
-    String confirmPassword = controller.confirmPassword.text.trim();
-
-    if (confirmPassword.length < 3 && confirmPassword.isEmpty) return null;
-
-    if (!validadePassword.isPasswordEquals(password, confirmPassword)) {
-      statusConfirmSenha = StatusValidationDefault.ERROR;
-      return "As senhas são diferentes.";
-    }
-
-    statusConfirmSenha = StatusValidationDefault.SUCCESS;
-    return null;
-  }
-
-  bool _getStatusEmail() {
-    return [StatusValidationDefault.SUCCESS, StatusValidationDefault.PRISTINE]
-        .contains(statusEmail);
-  }
-
-  bool _getStatusPassword() {
-    return [StatusValidationDefault.SUCCESS, StatusValidationDefault.PRISTINE]
-        .contains(statusSenha);
-  }
-
-  bool _getStatusConfirmPassword() {
-    return [StatusValidationDefault.SUCCESS, StatusValidationDefault.PRISTINE]
-        .contains(statusConfirmSenha);
-  }
-
-  Future<void> createWithEmailAndPassword(String email, String password) async {
-    var user = await _authenticationService.createWithEmailAndPassword(
-        email, password);
-
+  Future<void> createWithEmailAndPassword(
+      String name, String email, String password) async {
+    var user = await _authenticateUserUseCase.createUser(name, email, password);
     setState(() {
       isLoading = false;
     });
 
     if (user != null) {
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const SignIn()),
-      );
+      Navigator.of(context).pushNamed('/signin');
     }
   }
 
-  onSubmitted(String email, String password) {
+  onSubmitted(String name, String email, String password) {
     setState(() {
       isLoading = true;
     });
 
-    createWithEmailAndPassword(email, password);
+    createWithEmailAndPassword(name, email, password);
   }
 
   @override
@@ -148,151 +55,170 @@ class SignUpState extends State<SignUp> {
               fit: BoxFit.cover,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 90, horizontal: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Column(
-                          children: [
-                            Align(
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 90, horizontal: 40),
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Align(
                               alignment: Alignment.centerLeft,
-                              child: Container(
-                                height: 60,
-                                width: 60,
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/logo-white.png'),
-                                    fit: BoxFit.cover,
+                              child: Column(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: const BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/logo-white.png'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16.0),
+                                      child: const SizedBox(
+                                        width: 190,
+                                        child: Text(
+                                          'Bem vindo ao Money',
+                                          style: TextStyle(
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white,
+                                              decoration: TextDecoration.none),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )),
+                          Container(
+                            height: 60,
+                          ),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Cadastra-se",
+                              style: TextStyle(
+                                  fontSize: 28, fontWeight: FontWeight.w700),
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16.0),
-                                child: const SizedBox(
-                                  width: 190,
-                                  child: Text(
-                                    'Bem vindo ao Money',
-                                    style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white,
-                                        decoration: TextDecoration.none),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        )),
-                    Container(
-                      height: 60,
-                    ),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Cadastra-se",
-                        style: TextStyle(
-                            fontSize: 28, fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                    Container(
-                      height: 5,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                          labelText: 'Digite seu e-mail',
-                          errorText: _getErrorTextEmail(),
-                          suffixIcon: _getStatusEmail()
-                              ? null
-                              : const Icon(
-                                  Icons.error_outline,
-                                  color: Colors.red,
-                                )),
-                      controller: controller.email,
-                      onChanged: (value) {
-                        setState(() {
-                          email = value;
-                        });
-                      },
-                    ),
-                    Container(
-                      height: 5,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                          labelText: 'Digite sua senha',
-                          errorText: _getErrorTextPassword(),
-                          suffixIcon: _getStatusPassword()
-                              ? null
-                              : const Icon(
-                                  Icons.error_outline,
-                                  color: Colors.red,
-                                )),
-                      obscureText: !isVisible,
-                      controller: controller.password,
-                      onChanged: (value) {
-                        setState(() {
-                          password = value;
-                        });
-                      },
-                    ),
-                    Container(
-                      height: 5,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                          labelText: 'Confirme sua senha',
-                          errorText: _getErrorTextConfirmPassword(),
-                          suffixIcon: _getStatusConfirmPassword()
-                              ? null
-                              : const Icon(
-                                  Icons.error_outline,
-                                  color: Colors.red,
-                                )),
-                      obscureText: !isVisible,
-                      controller: controller.confirmPassword,
-                      onChanged: (value) {
-                        setState(() {
-                          confirmPassword = value;
-                        });
+                          ),
+                          Container(
+                            height: 5,
+                          ),
+                          CustomTextFormField(
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, insira nome';
+                              }
 
-                        _getStatusConfirmPassword();
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(
-                    width: double.infinity,
-                    child: ButtonPrimary(
-                        isLoading: isLoading,
-                        text: "Cadastrar",
-                        icon: Icons.arrow_forward_ios,
-                        onPressed: () {
-                          onSubmitted(email, password);
-                        })),
-                SizedBox(
-                  width: double.infinity,
-                  child: ButtonSecondary(
-                      text: "Voltar",
-                      icon: Icons.arrow_forward_ios,
-                      onPressed: () async {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const WelcomeScreen()),
-                        );
-                      }),
-                )
-              ],
+                              return null;
+                            },
+                            labelText: 'Digite seu nome',
+                            onChanged: createUserController.setName,
+                          ),
+                          Container(
+                            height: 5,
+                          ),
+                          CustomTextFormField(
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, insira um endereço de e-mail';
+                              }
+
+                              final emailRegex = RegExp(
+                                  r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$');
+                              if (!emailRegex.hasMatch(value)) {
+                                return 'Por favor, insira um endereço de e-mail válido';
+                              }
+
+                              return null;
+                            },
+                            labelText: 'Digite seu e-mail',
+                            onChanged: createUserController.setEmail,
+                          ),
+                          Container(
+                            height: 5,
+                          ),
+                          CustomTextFormField(
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, insira uma senha.';
+                              }
+
+                              if (value.length < 5) {
+                                return 'Sua senha deve ter mais que 5 caracteres.';
+                              }
+
+                              return null;
+                            },
+                            labelText: 'Digite sua senha',
+                            isPassword: true,
+                            onChanged: createUserController.setPassword,
+                          ),
+                          Container(
+                            height: 5,
+                          ),
+                          CustomTextFormField(
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, confirme sua senha.';
+                              }
+
+                              if (value != createUserController.password) {
+                                return 'Suas senhas estão diferentes.';
+                              }
+
+                              return null;
+                            },
+                            labelText: 'Confirme sua senha',
+                            onChanged: createUserController.setConfirmPassword,
+                            isPassword: true,
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: 10,
+                      ),
+                      SizedBox(
+                          width: double.infinity,
+                          child: ButtonPrimary(
+                              isLoading: isLoading,
+                              text: "Cadastrar",
+                              icon: Icons.arrow_forward_ios,
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  onSubmitted(
+                                      createUserController.name!,
+                                      createUserController.email!,
+                                      createUserController.password!);
+                                }
+                              })),
+                      Container(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ButtonSecondary(
+                            text: "Voltar",
+                            icon: Icons.arrow_forward_ios,
+                            onPressed: () async {
+                              Navigator.of(context).pushNamed('/welcome');
+                            }),
+                      )
+                    ],
+                  )),
             ),
           )
         ],

@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:money/src/domain/entities/user_entity.dart';
 
 class AuthState with ChangeNotifier {
-  User? user;
+  UserEntity? user;
 
-  void setUser(User userAuthentication) {
+  void setUser(UserEntity userAuthentication) {
     user = userAuthentication;
     notifyListeners();
   }

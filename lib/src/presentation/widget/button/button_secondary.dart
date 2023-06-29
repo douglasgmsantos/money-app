@@ -32,6 +32,12 @@ class ButtonSecondary extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30.0),
               ),
             ),
+            side: MaterialStateProperty.all<BorderSide>(
+              BorderSide(
+                width: 1,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
