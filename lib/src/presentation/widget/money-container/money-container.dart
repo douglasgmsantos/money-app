@@ -37,17 +37,17 @@ class _MoneyContainerState extends State<MoneyContainer> {
             fontSize: 24,
           ),
         ),
-        backgroundColor: const Color(0xFF2743FB),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const DrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(
-                color: Color(0xFF2743FB),
+                color: Theme.of(context).primaryColor,
               ),
-              child: Profile(),
+              child: const Profile(),
             ),
             DrawerItem(
               leading: const Icon(

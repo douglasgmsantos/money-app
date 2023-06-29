@@ -16,7 +16,7 @@ class DrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      iconColor: const Color(0xFF2743FB),
+      iconColor: Theme.of(context).primaryColor,
       leading: leading,
       trailing: showTrailing
           ? const Icon(
@@ -25,7 +25,7 @@ class DrawerItem extends StatelessWidget {
           : null,
       title: Text(
         title,
-        style: const TextStyle(fontSize: 16, color: Color(0xFF2743FB)),
+        style: TextStyle(fontSize: 16, color: Theme.of(context).primaryColor),
       ),
       onTap: onTap,
     );

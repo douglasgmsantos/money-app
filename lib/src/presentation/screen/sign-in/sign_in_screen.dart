@@ -50,7 +50,7 @@ class _SignInState extends State<SignIn> {
         type: QuickAlertType.error,
         text: error.message,
         confirmBtnText: "OK",
-        confirmBtnColor: const Color(0xFF2743FB),
+        confirmBtnColor: Theme.of(context).primaryColor,
       );
     } finally {
       setState(() {
