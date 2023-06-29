@@ -24,6 +24,7 @@ dependencies:
   mobx: any
   flutter_mobx: any
   flutter_screenutil: ^5.8.4
+  quickalert: ^1.0.1
 
 
 dev_dependencies:

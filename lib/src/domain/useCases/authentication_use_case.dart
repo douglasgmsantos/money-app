@@ -6,7 +6,8 @@ class AuthenticateUserUseCase {
 
   AuthenticateUserUseCase();
 
-  Future<UserEntity?> authenticate(String email, String password) async {
+  Future<(UserEntity?, String?)> authenticate(
+      String email, String password) async {
     final user = await _authenticationRepository.signInWithEmailAndPassword(
         email, password);
     return user;

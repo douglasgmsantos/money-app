@@ -24,13 +24,19 @@ class SignUpState extends State<SignUp> {
 
   Future<void> createWithEmailAndPassword(
       String name, String email, String password) async {
-    var user = await _authenticateUserUseCase.createUser(name, email, password);
-    setState(() {
-      isLoading = false;
-    });
+    var createdUser = false;
 
-    if (user != null) {
+    try {
+      createdUser =
+          await _authenticateUserUseCase.createUser(name, email, password);
+
+      setState(() {
+        isLoading = false;
+      });
+
       Navigator.of(context).pushNamed('/signin');
+    } catch (error) {
+      print(error);
     }
   }
 

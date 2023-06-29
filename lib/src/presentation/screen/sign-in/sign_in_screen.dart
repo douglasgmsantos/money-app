@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:money/src/core/errors/failure.dart';
 import 'package:money/src/domain/useCases/authentication_use_case.dart';
 import 'package:money/src/presentation/controller/auth_controller.dart';
 import 'package:money/src/presentation/widget/custom_text_form_field.dart';
@@ -7,6 +10,7 @@ import 'package:money/src/presentation/widget/button/button_secondary.dart';
 import 'package:money/src/presentation/screen/sign-up/sign_up_screen.dart';
 import 'package:money/src/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -28,20 +32,29 @@ class _SignInState extends State<SignIn> {
         isLoading = true;
       });
       AuthState userState = Provider.of<AuthState>(context, listen: false);
-      var user = await _authenticateUserUseCase.authenticate(email, password);
+      var response =
+          await _authenticateUserUseCase.authenticate(email, password);
 
-      setState(() {
-        isLoading = false;
-      });
+      if (response.$2 != null) {
+        throw Failure(response.$2!);
+      }
 
-      if (user != null) {
-        userState.setUser(user);
-        // ignore: use_build_context_synchronously
+      if (response.$1 != null) {
+        userState.setUser(response.$1!);
         Navigator.of(context).pushNamed('/home');
       }
+    } on Failure catch (error) {
+      QuickAlert.show(
+        context: context,
+        title: 'Oops...',
+        type: QuickAlertType.error,
+        text: error.message,
+        confirmBtnText: "OK",
+        confirmBtnColor: const Color(0xFF2743FB),
+      );
     } finally {
       setState(() {
-        // isLoading = false;
+        isLoading = false;
       });
     }
   }

@@ -11,7 +11,7 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
   FirebaseAuthenticationRepository();
 
   @override
-  Future<UserEntity?> signInWithEmailAndPassword(
+  Future<(UserEntity?, String?)> signInWithEmailAndPassword(
       String email, String password) async {
     try {
       final response = await _authFirebaseDataSource.signInWithEmailAndPassword(
@@ -27,18 +27,18 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
           .get()
           .then((DocumentSnapshot doc) => doc.data() as Map<String, dynamic>);
 
-      return UserEntity.fromJson(user);
+      return (UserEntity.fromJson(user), null);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        return (null, 'Usuário ou senha não encontrado, tente novamente!');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        return (null, 'Usuário ou senha não encontrado, tente novamente!');
+      } else {
+        return (null, 'Ocorreu um erro ao tentar logar, tente novamente!');
       }
-      return null;
     } catch (e) {
-      print(e);
+      return (null, 'Ocorreu um erro ao tentar logar, tente novamente!');
     }
-    return null;
   }
 
   @override
