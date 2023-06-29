@@ -48,7 +48,7 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
           await _authFirebaseDataSource.createUserWithEmailAndPassword(
               email: user.email!, password: user.password!);
 
-      if (response.credential != null) {
+      if (response.user != null) {
         throw Failure("Não foi possível realizar a autenticação!");
       }
 

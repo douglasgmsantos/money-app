@@ -25,6 +25,7 @@ dependencies:
   flutter_mobx: any
   flutter_screenutil: ^5.8.4
   quickalert: ^1.0.1
+  google_fonts: ^5.1.0
 
 
 dev_dependencies:

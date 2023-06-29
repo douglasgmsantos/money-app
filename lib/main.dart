@@ -13,27 +13,27 @@ import 'package:money/src/presentation/screen/profile/profile_screen.dart';
 import 'package:money/src/presentation/screen/splash/splash_screen.dart';
 import 'package:money/src/presentation/screen/welcome/welcome_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:money/src/styles/money_theme.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
 void main() async {
   await Config().init();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final themeData = MoneyThemeData();
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => AuthState(),
       child: MaterialApp(
-        theme: ThemeData(
-          primaryColor: const Color(0xFF2743FB),
-          fontFamily: 'Roboto`',
-        ),
+        theme: themeData.getThemeData(),
         home: const SplashScreen(),
         initialRoute: '/',
         onGenerateRoute: (settings) {
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             case '/signup':
               return MaterialPageRoute(builder: (_) => const SignUp());
             case '/signin':
-              return MaterialPageRoute(builder: (_) => SignIn());
+              return MaterialPageRoute(builder: (_) => const SignIn());
             case '/welcome':
               return MaterialPageRoute(builder: (_) => const WelcomeScreen());
             case '/home':
