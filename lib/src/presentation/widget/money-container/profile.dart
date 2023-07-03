@@ -8,7 +8,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AuthState>(context);
-    final profileName = appState.user!.getNameAndLastName();
+    final profileName = appState.user!.getFirstNameAndLastName();
 
     return Row(
       children: [

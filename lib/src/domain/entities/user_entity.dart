@@ -23,7 +23,11 @@ class UserEntity {
     return 'UserEntity(uid: $uid, name: $name, email: $email, password: $password, isActive: $isActive, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
-  String getNameAndLastName() {
+  String getFirstName() {
+    return name!.split(" ").first;
+  }
+
+  String getFirstNameAndLastName() {
     if (name == null) return "Profile";
 
     String firstName = name!.split(" ").first;

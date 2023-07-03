@@ -29,48 +29,47 @@ class _MoneyContainerState extends State<MoneyContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 24,
+        appBar: AppBar(
+          title: Text(
+            widget.title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+            ),
+          ),
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                ),
+                child: const Profile(),
+              ),
+              DrawerItem(
+                leading: const Icon(
+                  Icons.payment,
+                ),
+                title: "Transações",
+                onTap: () {
+                  // Ação quando a opção 1 for selecionada
+                },
+              ),
+              const Divider(),
+              DrawerItem(
+                showTrailing: false,
+                leading: const Icon(
+                  Icons.logout,
+                ),
+                title: "Logout",
+                onTap: logout,
+              )
+            ],
           ),
         ),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: const Profile(),
-            ),
-            DrawerItem(
-              leading: const Icon(
-                Icons.payment,
-              ),
-              title: "Transações",
-              onTap: () {
-                // Ação quando a opção 1 for selecionada
-              },
-            ),
-            const Divider(),
-            DrawerItem(
-              showTrailing: false,
-              leading: const Icon(
-                Icons.logout,
-              ),
-              title: "Logout",
-              onTap: logout,
-            )
-          ],
-        ),
-      ),
-      body: widget.body,
-    );
+        body: widget.body);
   }
 }
