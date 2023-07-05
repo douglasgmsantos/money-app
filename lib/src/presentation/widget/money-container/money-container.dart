@@ -38,6 +38,7 @@ class _MoneyContainerState extends State<MoneyContainer> {
             ),
           ),
           backgroundColor: Theme.of(context).primaryColor,
+          elevation: 0.0,
         ),
         drawer: Drawer(
           child: ListView(

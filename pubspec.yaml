@@ -26,6 +26,7 @@ dependencies:
   flutter_screenutil: ^5.8.4
   quickalert: ^1.0.1
   google_fonts: ^5.1.0
+  syncfusion_flutter_charts: ^22.1.36
 
 
 dev_dependencies:
